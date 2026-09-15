@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>重点项目深读 · 四个已投入生产运行的 AI 系统</title>
+<style>
+  :root{
+    --paper:#f8f5ef; --paper2:#f1ede4; --ink:#191714; --ink2:#4a463f; --mute:#8a847a; --faint:#c9c3b6;
+    --line:#d8d2c4; --hair:#e5e0d4;
+    --odm:#2b4c8c;   /* 靛蓝 */
+    --a3:#2f6e4f;    /* 竹绿 */
+    --hrs:#bf3a2b;   /* 朱红 */
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--paper); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    -webkit-font-smoothing:antialiased; line-height:1.75;
+  }
+  .serif{font-family:"Songti SC","Noto Serif SC","STSong","SimSun",serif}
+  .wrap{max-width:1060px;margin:0 auto;padding:0 44px}
+
+  /* ===== 刊头 ===== */
+  .mast{padding-top:34px}
+  .mast .row{display:flex;justify-content:space-between;align-items:baseline;font-size:12px;letter-spacing:.22em;color:var(--ink2)}
+  .mast .row b{letter-spacing:.22em;font-weight:700;color:var(--ink)}
+  .rule-thick{height:3px;background:var(--ink);margin-top:12px}
+  .rule-thin{height:1px;background:var(--ink);margin-top:3px}
+
+  /* ===== HERO ===== */
+  .hero{position:relative;padding:64px 0 56px;display:flex;gap:40px}
+  .hero-main{flex:1}
+  h1{
+    font-family:"Songti SC","Noto Serif SC","STSong",serif;
+    font-size:clamp(42px,5.4vw,62px);font-weight:900;line-height:1.28;letter-spacing:.02em;
+  }
+  h1 .red{color:var(--hrs)}
+  .hero-sub{margin-top:22px;font-size:16.5px;color:var(--ink2);max-width:720px}
+  .hero-sub b{color:var(--ink)}
+  .side-label{
+    writing-mode:vertical-rl; font-family:"Songti SC","Noto Serif SC",serif;
+    font-size:15px;letter-spacing:.5em;color:var(--mute);
+    border-left:1px solid var(--line);padding-left:18px;flex:none;height:300px;margin-top:8px;
+  }
+  .toc{display:flex;gap:0;margin-top:44px;border-top:1px solid var(--ink);border-bottom:1px solid var(--line)}
+  .toc a{
+    flex:1;display:block;text-decoration:none;color:var(--ink);padding:16px 6px 14px;
+    border-left:1px solid var(--line);transition:background .18s;
+  }
+  .toc a:first-child{border-left:none;padding-left:0}
+  .toc a:not(:first-child){padding-left:22px}
+  .toc a:hover{background:var(--paper2)}
+  .toc .no{font-family:ui-monospace,Menlo,monospace;font-size:11px;color:var(--mute);letter-spacing:.14em}
+  .toc .tt{font-family:"Songti SC","Noto Serif SC",serif;font-size:19px;font-weight:700;margin-top:4px}
+  .toc .st{font-size:12px;color:var(--mute);margin-top:2px}
+
+  /* ===== 项目区 ===== */
+  .proj{padding:66px 0 54px;border-top:1px solid var(--line);position:relative}
+  .proj:first-of-type{border-top:none}
+  .side-mini{
+    display:none;position:absolute;right:-58px;top:74px;
+    writing-mode:vertical-rl;font-family:"Songti SC","Noto Serif SC",serif;
+    font-size:11.5px;letter-spacing:.42em;color:var(--mute);
+  }
+  @media (min-width:1220px){.side-mini{display:block}}
+  .p-head{display:flex;align-items:baseline;gap:20px;flex-wrap:wrap}
+  .p-no{
+    font-family:"Songti SC","Noto Serif SC",serif;font-size:64px;font-weight:900;line-height:1;
+    color:var(--ac);opacity:.9;
+  }
+  .p-title{font-family:"Songti SC","Noto Serif SC",serif;font-size:34px;font-weight:900;letter-spacing:.02em}
+  .stamp{
+    flex:none;align-self:center;margin-left:auto;
+    font-family:"Songti SC","Noto Serif SC",serif;
+    color:var(--ac);border:2px solid var(--ac);border-radius:3px;
+    font-size:14px;font-weight:700;letter-spacing:.3em;padding:5px 10px 5px 13px;
+    transform:rotate(-3deg);opacity:.9;white-space:nowrap;
+    mix-blend-mode:multiply;
+    text-shadow:0 0 1px var(--ac);
+    box-shadow:inset 0 0 5px rgba(0,0,0,.04);
+  }
+  .stamp.sub{transform:rotate(2deg);color:var(--ink2);border-color:var(--ink2);opacity:.65;margin-left:0}
+  .p-lede{margin-top:14px;font-size:16px;color:var(--ink2);max-width:780px;text-align:justify}
+  .p-lede b{color:var(--ink)}
+
+  /* 大数字条 */
+  .nums{display:flex;margin:38px 0 8px}
+  .num{flex:1;border-left:1px solid var(--line);padding:2px 18px 0}
+  .num:first-child{border-left:none;padding-left:0}
+  .num .v{font-family:"Songti SC","Noto Serif SC",serif;font-size:46px;font-weight:900;line-height:1.1;color:var(--ac);letter-spacing:.01em}
+  .num .v small{font-size:22px;font-weight:700}
+  .num .k{font-size:12.5px;color:var(--mute);margin-top:6px;letter-spacing:.04em}
+  .nums-caption{font-size:11px;letter-spacing:.2em;color:var(--mute);margin-top:10px}
+
+  /* 流程轨 */
+  .sec-label{display:flex;align-items:center;gap:14px;margin:44px 0 20px;counter-increment:subno}
+  .sec-label .t{font-size:13px;letter-spacing:.3em;color:var(--ink2);font-weight:700;white-space:nowrap}
+  .sec-label .t::before{
+    content:"0" counter(projno) "·" counter(subno);
+    font-family:ui-monospace,Menlo,monospace;font-size:11px;font-weight:700;
+    color:var(--ac);letter-spacing:.1em;margin-right:10px;vertical-align:1px;
+  }
+  .sec-label .l{flex:1;height:1px;background:var(--line)}
+  .rail{display:flex;margin:6px 0 0}
+  .stop{flex:1;position:relative;text-align:center;padding:30px 4px 0}
+  .stop::before{content:"";position:absolute;top:7px;left:0;right:0;height:2px;background:var(--faint)}
+  .stop:first-child::before{left:50%}
+  .stop:last-child::before{right:50%}
+  .stop .dot{
+    position:absolute;z-index:1;top:0;left:50%;transform:translateX(-50%);
+    display:inline-block;width:16px;height:16px;border-radius:50%;
+    background:var(--paper);border:3px solid var(--ac);
+  }
+  .stop.end .dot{background:var(--ac)}
+  .stop .st-no{font-family:ui-monospace,Menlo,monospace;font-size:10px;color:var(--mute);letter-spacing:.12em}
+  .stop .st-t{font-size:15px;font-weight:700;margin-top:5px}
+  .stop .st-s{font-size:12px;color:var(--mute);margin-top:2px}
+  .rail-side{margin-top:18px;font-size:13px;color:var(--mute)}
+  .rail-side b{color:var(--ink)}
+
+  /* 亮点 */
+  .feats{display:grid;grid-template-columns:1fr 1fr;gap:14px 36px;margin-top:4px}
+  .feat{display:flex;gap:14px;font-size:15px;color:var(--ink2)}
+  .feat .mk{font-family:"Songti SC",serif;color:var(--ac);font-weight:900;flex:none;font-size:15px}
+  .feat b{color:var(--ink)}
+
+  /* 三档卡（HRS） */
+  .tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:4px}
+  .tier{border:1px solid var(--line);background:#fcfaf5;padding:20px 20px 16px;border-top:3px solid var(--tc)}
+  .tier .glyph{font-size:15px;line-height:1;letter-spacing:0}
+  .tier .tt{font-family:"Songti SC","Noto Serif SC",serif;font-size:18px;font-weight:900;margin-top:10px}
+  .tier .td{font-size:13px;color:var(--ink2);margin-top:6px;line-height:1.7}
+
+  /* 铁律（HRS） */
+  .rules{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:4px}
+  .rule{border-left:3px solid var(--hrs);background:#fcfaf5;border-top:1px solid var(--hair);border-right:1px solid var(--hair);border-bottom:1px solid var(--hair);padding:18px 20px}
+  .rule .rt{font-family:"Songti SC","Noto Serif SC",serif;font-size:16.5px;font-weight:900;color:var(--hrs)}
+  .rule .rd{font-size:13.5px;color:var(--ink2);margin-top:6px}
+  .rule .rd b{color:var(--ink)}
+
+  /* 落脚行 */
+  .foot-row{
+    display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;
+    margin-top:34px;padding-top:14px;border-top:1px solid var(--line);
+  }
+  .foot-row .fl{font-size:12px;color:var(--mute);font-family:ui-monospace,Menlo,monospace}
+  .foot-row a{color:var(--ac);font-size:13.5px;font-weight:700;text-decoration:none;border-bottom:1px solid var(--ac);padding-bottom:1px}
+  .foot-row a:hover{opacity:.75}
+
+  /* ===== 作品展示集 ===== */
+  .plates{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:6px}
+  .plate{margin:0;border:1px solid var(--line2);background:#fcfaf5;padding:10px;break-inside:avoid}
+  .plate img{width:100%;display:block;border:1px solid var(--hair)}
+  .plate img.portrait{width:auto;max-width:100%;margin:0 auto;max-height:640px}
+  .plate figcaption{display:flex;justify-content:space-between;gap:12px;font-size:12.5px;color:var(--ink2);margin-top:9px;line-height:1.5}
+  .plate .no{font-family:ui-monospace,Menlo,monospace;color:var(--ac);font-weight:700;margin-right:8px}
+  .plate .src{color:var(--mute);font-size:11px;white-space:nowrap}
+  .plate-wide{grid-column:1 / -1}
+  .term-head{display:flex;justify-content:space-between;gap:12px;font-family:ui-monospace,Menlo,monospace;font-size:11px;color:var(--ink2);border-bottom:1px solid var(--line);padding:2px 4px 9px}
+  .term-head .exit{color:#2f6e4f;font-weight:700}
+  table.scan{width:100%;border-collapse:collapse;font-family:ui-monospace,Menlo,monospace;font-size:11.5px;margin-top:4px}
+  .scan th{text-align:left;color:var(--mute);font-weight:400;border-bottom:1.5px solid var(--ink);padding:5px 6px;letter-spacing:.08em}
+  .scan td{padding:5px 6px;border-bottom:1px solid var(--hair);color:var(--ink2)}
+  .scan td:nth-child(n+2){text-align:right}
+  .scan th:nth-child(n+2){text-align:right}
+  .scan tr.sum td{border-top:2px solid var(--ink);border-bottom:none;font-weight:700;color:var(--ink)}
+  .scan .w{color:var(--hrs);font-size:10.5px;margin-left:6px}
+  .scan-note{font-size:11px;color:var(--mute);padding:6px 4px 0;font-family:ui-monospace,Menlo,monospace}
+  .link-caution{font-size:12px;color:var(--mute);margin-top:2px}
+  .link-caution b{color:var(--ink2)}
+
+  /* ===== 结尾 ===== */
+  .ending{border-top:3px solid var(--ink);margin-top:30px;padding:6px 0 0}
+  .ending .rule-thin2{height:1px;background:var(--ink);margin-top:3px;margin-bottom:52px}
+  .ending h2{font-family:"Songti SC","Noto Serif SC",serif;font-size:30px;font-weight:900;letter-spacing:.03em}
+  .ending h2 .red{color:var(--hrs)}
+  .ending .sub2{font-size:15px;color:var(--ink2);margin:12px 0 30px}
+  .beat-row{display:flex;gap:26px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:24px}
+  .beat{display:flex;align-items:baseline;gap:10px;text-decoration:none;color:var(--ink)}
+  .beat .sq{width:9px;height:9px;flex:none;align-self:center}
+  .beat b{font-family:"Songti SC","Noto Serif SC",serif;font-size:17px;font-weight:900}
+  .beat span{font-size:12.5px;color:var(--mute)}
+  .beat:hover b{color:var(--hrs)}
+
+  footer{margin-top:60px;padding:20px 0 46px;border-top:1px solid var(--line)}
+  footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:12px;color:var(--mute)}
+  footer a{color:var(--ink2);text-decoration:none;border-bottom:1px solid var(--faint)}
+  footer a:hover{color:var(--ink)}
+
+  body{counter-reset:projno}
+  .proj{counter-increment:projno;counter-reset:subno}
+
+  @media (max-width:900px){
+    .nums{flex-wrap:wrap}
+    .num{flex:1 1 40%;margin-bottom:18px}
+    .num:nth-child(odd){border-left:none;padding-left:0}
+    .feats,.rules{grid-template-columns:1fr}
+    .tiers{grid-template-columns:1fr}
+    .rail{flex-direction:column}
+    .stop{text-align:left;padding:0 0 14px 26px}
+    .stop::before{left:7px;right:auto;top:0;bottom:0;width:2px;height:auto}
+    .stop:first-child::before{top:50%}
+    .stop:last-child::before{bottom:50%;right:auto}
+    .stop .dot{position:absolute;left:0;top:4px}
+    .stop .st-no{margin-bottom:0}
+    .stop .st-t{margin-top:0}
+    .side-label{display:none}
+    .wrap{padding:0 22px}
+    .toc{flex-direction:column}
+    .toc a{border-left:none;border-top:1px solid var(--line);padding-left:0 !important}
+    .toc a:first-child{border-top:none}
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= 刊头 + HERO ================= -->
+<div class="mast">
+  <div class="wrap">
+    <div class="row"><b>AURORA · 重点专项深读</b><span>2026 年 09 月 15 日 · 第 01 期 · <b style="color:var(--hrs);font-weight:700">持续优化中</b></span></div>
+    <div class="rule-thick"></div>
+    <div class="rule-thin"></div>
+  </div>
+</div>
+
+<header class="hero wrap">
+  <div class="hero-main">
+    <h1><span class="red">四个</span>已投入生产运行的<br>AI 系统。</h1>
+    <p class="hero-sub">本文不描述规划，只呈现已落地的系统：其一在锐捷与字节之间线上流转真实变更单；其二已通过公司开题评审、配套工具陆续交付；其三将 988 行规格填写固化为可复用技能；其四实现线上故障的自动化诊断处理。</p>
+    <nav class="toc">
+      <a href="#p1"><div class="no">01</div><div class="tt">ODM 变更管理系统</div><div class="st">线上运行 · 锐捷×字节</div></a>
+      <a href="#p2"><div class="no">02</div><div class="tt">AI 敏捷生产系统</div><div class="st">已过开题评审 · V2.2</div></a>
+      <a href="#p3"><div class="no">03</div><div class="tt">MRD → HRS 系统</div><div class="st">技能已固化 · v1.3</div></a>
+      <a href="#p4"><div class="no">04</div><div class="tt">线上故障处理助手</div><div class="st">已完成 · 线上运行中</div></a>
+    </nav>
+  </div>
+  <div class="side-label">真流程 · 真数据 · 真用户</div>
+</header>
+
+<main class="wrap">
+
+<!-- ================= 01 ODM ================= -->
+<section class="proj" id="p1" style="--ac:var(--odm)">
+  <div class="p-head">
+    <div class="p-no">01</div>
+    <div class="p-title">ODM 变更管理系统</div>
+    <div class="stamp">线上运行中</div>
+  </div>
+  <p class="p-lede">针对锐捷与字节 ODM 合作中变更单依赖即时通讯传递、进度难以追溯的问题，将跨公司变更流程迁移至飞书妙搭平台线上运行：客户经由免登录表单提交变更单，六阶段流转<b>全程留痕、系统自动通知、逐关确认</b>，过程信息不再依赖人工传递。</p>
+
+  <div class="nums">
+    <div class="num"><div class="v">6</div><div class="k">阶段流转 · 拖拽看板</div></div>
+    <div class="num"><div class="v">28</div><div class="k">字段变更单 · CR 编号自增</div></div>
+    <div class="num"><div class="v">3</div><div class="k">份免登录表单 · 开链接即填</div></div>
+    <div class="num"><div class="v">3</div><div class="k">格式导出 · Excel / Word / PDF</div></div>
+  </div>
+  <div class="nums-caption">变更单表 · Base 实时读写 · 妙搭 Web 三视图</div>
+
+  <div class="sec-label"><span class="t">变更单流转流程</span><span class="l"></span></div>
+  <div class="rail">
+    <div class="stop end"><div class="st-no">STEP 1</div><span class="dot"></span><div class="st-t">待受理</div><div class="st-s">客户提单</div></div>
+    <div class="stop"><div class="st-no">STEP 2</div><span class="dot"></span><div class="st-t">影响分析中</div><div class="st-s">锐捷承接</div></div>
+    <div class="stop"><div class="st-no">STEP 3</div><span class="dot"></span><div class="st-t">待字节确认</div><div class="st-s">客户拍板</div></div>
+    <div class="stop"><div class="st-no">STEP 4</div><span class="dot"></span><div class="st-t">执行中</div><div class="st-s">改动落地</div></div>
+    <div class="stop"><div class="st-no">STEP 5</div><span class="dot"></span><div class="st-t">每周反馈</div><div class="st-s">进展周报</div></div>
+    <div class="stop"><div class="st-no">STEP 6</div><span class="dot"></span><div class="st-t">已关闭</div><div class="st-s">发起人确认闭环</div></div>
+  </div>
+  <div class="rail-side">任一阶段可流转至「已驳回」出口，驳回原因留档可查。</div>
+
+  <div class="sec-label"><span class="t">系统功能 · 模块化能力</span><span class="l"></span></div>
+  <div class="feats">
+    <div class="feat"><span class="mk">▪</span><span><b>变更提单</b>——免登录分享表单与妙搭弹窗双入口，八字段精简填写，飞书实名自动绑定提单人</span></div>
+    <div class="feat"><span class="mk">▪</span><span><b>流程引擎</b>——六阶段状态机驱动流转，任一阶段可驳回留痕；拖拽看板 / 列表 / 统计三视图</span></div>
+    <div class="feat"><span class="mk">▪</span><span><b>路由通知</b>——阶段变更自动私信触达承接人与相关人，逐关表单回传，通知路由按角色配置</span></div>
+    <div class="feat"><span class="mk">▪</span><span><b>闭环管控</b>——关闭前发起人确认；访问口令门禁与登录用户台账保障数据边界</span></div>
+    <div class="feat"><span class="mk">▪</span><span><b>统计看板</b>——全局统计指标卡与变更类型 / 所处阶段 / 紧急度三维度分布图表</span></div>
+    <div class="feat"><span class="mk">▪</span><span><b>报表导出</b>——Excel 多条简略、Word 六环节全流程、PDF 单条详情，一键生成</span></div>
+  </div>
+
+  <div class="foot-row">
+    <span class="fl">change-management-system/miaoda-app · NestJS 代理 + Base 实时读写</span>
+    <a href="https://ruijie.feishuapp.com/app/app_17dnqg078y8" target="_blank">线上入口 ↗</a>
+  </div>
+</section>
+
+<!-- ================= 02 AI 敏捷生产 ================= -->
+<section class="proj" id="p2" style="--ac:var(--a3)">
+  <div class="side-mini">从接需求到投产</div>
+  <div class="p-head">
+    <div class="p-no">02</div>
+    <div class="p-title">AI 敏捷生产系统</div>
+    <div class="stamp">开题已过评审</div>
+    <div class="stamp sub">V2.2</div>
+  </div>
+  <p class="p-lede">对公司「接需求到投产」的主流程实施 AI 化改造并完成立项。按公司真实流程测算：<b>全流程 4~5 天、EE 填单 0.5 天、评审环节引入 AI 后 0.9 人时</b>；配套工具已陆续交付，其中单板委托控制台已完成试点、线上运行。</p>
+
+  <div class="nums">
+    <div class="num"><div class="v">4<small>–</small>5<small>天</small></div><div class="k">全流程（真实口径）</div></div>
+    <div class="num"><div class="v">0.5<small>天</small></div><div class="k">EE 填单</div></div>
+    <div class="num"><div class="v">0.9<small>人时</small></div><div class="k">评审 · AI 化之后</div></div>
+    <div class="num"><div class="v">0.149<small>s</small></div><div class="k">3 板工艺文件演练（npi-doctor）</div></div>
+  </div>
+  <div class="nums-caption">立项报告 V2.2 · 李南 / 刘龙评审意见已吸收 · 8/19 评审会妙记存档</div>
+
+  <div class="sec-label"><span class="t">业务主流程 · 立项报告确定</span><span class="l"></span></div>
+  <div class="rail">
+    <div class="stop end"><span class="dot"></span><div class="st-t">厘清需求</div><div class="st-s">MRD → HRS</div></div>
+    <div class="stop"><span class="dot"></span><div class="st-t">齐套预算</div><div class="st-s">长周期物料部品</div></div>
+    <div class="stop"><span class="dot"></span><div class="st-t">委托加工单</div><div class="st-s">云文档登记 · AI 填单</div></div>
+    <div class="stop"><span class="dot"></span><div class="st-t">委托工单</div><div class="st-s">生产流程系统提起</div></div>
+  </div>
+
+  <div class="sec-label"><span class="t">已交付的配套工具</span><span class="l"></span></div>
+  <div class="feats">
+    <div class="feat"><span class="mk">▪</span><span><b>npi-doctor 工艺文件产线</b>——batch --docgen 一体化输出，3 块单板演练全流程 0.149 秒</span></div>
+    <div class="feat"><span class="mk">▪</span><span><b>单板委托控制台</b>——填单 3 分钟 + ODB 自动评审；试点已结束，线上运行中</span></div>
+    <div class="feat"><span class="mk">▪</span><span><b>生产协同系统</b>——覆盖 29 步生产流程，机器人自动建群、自动催核，替代人工追料沟通</span></div>
+    <div class="feat"><span class="mk">▪</span><span><b>智能填单软件</b>——Windows 免安装版 v1.1 已交付，产线采用「AI + 工程师」协同模式编写工艺文件</span></div>
+  </div>
+
+  <div class="foot-row">
+    <span class="fl">A3开题报告-AI敏捷生产系统.xlsx（公司模板重制）· AI敏捷生产系统立项报告V2.2.docx</span>
+    <span class="fl">配套：npi-doctor / 单板委托控制台 / 29 步协同 / 智能填单</span>
+  </div>
+</section>
+
+<!-- ================= 03 MRD→HRS ================= -->
+<section class="proj" id="p3" style="--ac:var(--hrs)">
+  <div class="side-mini">快 · 而不编</div>
+  <div class="p-head">
+    <div class="p-no">03</div>
+    <div class="p-title">MRD → HRS 系统</div>
+    <div class="stamp">技能已固化</div>
+    <div class="stamp sub">v1.3</div>
+  </div>
+  <p class="p-lede">实现客户 MRD（市场需求文档）向 HRS（硬件需求规格书）【产品规格（PSE 主导）】列的自动转换：<b>MRD 有据可查的内容由 AI 完成，依据不足的条目一律转入 PSE 确认清单</b>，在大幅压缩工时的同时，不引入任何未经证实的内容。</p>
+
+  <div class="nums">
+    <div class="num"><div class="v">988</div><div class="k">行 · 首战实填（23 模块）</div></div>
+    <div class="num"><div class="v">6</div><div class="k">步流水线 · 定位卡与多 Agent 并行</div></div>
+    <div class="num"><div class="v">3</div><div class="k">档状态机 · 每格可溯源</div></div>
+    <div class="num"><div class="v">v1.3</div><div class="k">三次实战迭代固化</div></div>
+  </div>
+  <div class="nums-caption">2026-08-10 首战 23 模块 988 行 · 08-12 广东项目实测 · 现行 v1.3</div>
+
+  <div class="sec-label"><span class="t">填写规则 · 三档状态机</span><span class="l"></span></div>
+  <div class="tiers">
+    <div class="tier" style="--tc:#2f6e4f"><div class="glyph" style="color:#2f6e4f">●</div><div class="tt">MRD 有据</div><div class="td">依据 MRD 原文填写，记录引用行号，可回溯核查。</div></div>
+    <div class="tier" style="--tc:#2b4c8c"><div class="glyph" style="color:#2b4c8c">◆</div><div class="tt">硬约束可推导</div><div class="td">依据硬约束推导：如 1+1 冗余对应双电源、32×800G 配置下无 10G 光口对应条目填 N；模板基线亦属有效依据。</div></div>
+    <div class="tier" style="--tc:var(--hrs)"><div class="glyph" style="color:var(--hrs)">○</div><div class="tt">需 PSE 确认</div><div class="td">功率、型号、认证适用性等 MRD 未覆盖项一律不作代答，附背景与建议转入 PSE 确认清单。</div></div>
+  </div>
+
+  <div class="sec-label"><span class="t">两条铁律 · 源自实战返工教训</span><span class="l"></span></div>
+  <div class="rules">
+    <div class="rule"><div class="rt">铁律一 · 先通读，后下笔</div><div class="rd">填写前必须通读 MRD 全文并产出《产品定位卡》，每一处填写<b>均可追溯至 MRD 行号</b>。早期曾因模型自行假设「非出海」前提误判 4 行 NEBS 条目，而 MRD 原文明确为出海机型，该教训已固化为强制流程。</div></div>
+    <div class="rule"><div class="rt">铁律二 · MRD 未覆盖项，一律归 PSE</div><div class="rd">客户定制条目（含「XX」「由PSE填写」字样）无论推断把握多大均<b>禁止代答</b>，统一出具确认清单交 PSE 决策，杜绝任何臆造内容进入交付物。</div></div>
+  </div>
+
+  <div class="foot-row">
+    <span class="fl">skills/hrs · 动态定位规格列（EMC=L / 开关电源=N / 连接器=P，不预设固定列）· 脚本校验回写 + 自动重命名</span>
+  </div>
+</section>
+
+<!-- ================= 04 线上故障处理助手 ================= -->
+<section class="proj" id="p4" style="--ac:var(--ink)">
+  <div class="side-mini">从人工研判到智能诊断</div>
+  <div class="p-head">
+    <div class="p-no">04</div>
+    <div class="p-title">线上故障处理助手</div>
+    <div class="stamp">线上运行中</div>
+    <div class="stamp sub">已交付</div>
+  </div>
+  <p class="p-lede">面向锐捷线上故障的全生命周期处理助手已上线运行：故障群内<b>回复 @助手 即触发自动诊断</b>，输出根因分析、置信度、证据链与处置建议，历史相似案例自动检索，结论经人工确认后方对外发布。</p>
+
+  <div class="nums">
+    <div class="num"><div class="v">0.95</div><div class="k">根因置信度 · 真实案例实测</div></div>
+    <div class="num"><div class="v">3</div><div class="k">条相似案例自动检索（RMA 闭环）</div></div>
+    <div class="num"><div class="v">4</div><div class="k">项人工确认选项 · 结论发布前置</div></div>
+    <div class="num"><div class="v">8</div><div class="k">条行动项自动推送确认</div></div>
+  </div>
+  <div class="nums-caption">2026-09-11 需求收集会（第一场）· 会议纪要在档 · 08-07 起产出真实诊断</div>
+
+  <div class="sec-label"><span class="t">处理链路 · 最小闭环</span><span class="l"></span></div>
+  <div class="rail">
+    <div class="stop end"><span class="dot"></span><div class="st-t">群消息采集</div><div class="st-s">案例要素结构化</div></div>
+    <div class="stop"><span class="dot"></span><div class="st-t">线上案例咨询库</div><div class="st-s">统一模板 · 可检索</div></div>
+    <div class="stop"><span class="dot"></span><div class="st-t">AI 自动分析排查</div><div class="st-s">根因与证据链</div></div>
+    <div class="stop"><span class="dot"></span><div class="st-t">处置建议发布</div><div class="st-s">人工确认后输出</div></div>
+  </div>
+
+  <div class="sec-label"><span class="t">已交付内容</span><span class="l"></span></div>
+  <div class="feats">
+    <div class="feat"><span class="mk">▪</span><span><b>自动诊断</b>——群内 @ 助手即触发分析；08-07 B5020 CPU MCE 真实案例完成根因定位，置信度 0.95，并附完整证据链</span></div>
+    <div class="feat"><span class="mk">▪</span><span><b>案例库落盘</b>——诊断结论自动写入案例库（Base / 表 / 记录三级定位），相似案例自动检索辅助处置决策</span></div>
+    <div class="feat"><span class="mk">▪</span><span><b>数据通道</b>——fault-mcp（数据库 SSE 接口）验证通过，工单故障历史已完成导出核对</span></div>
+    <div class="feat"><span class="mk">▪</span><span><b>人工确认工作流</b>——诊断结论生成客户回复草稿，提供确认、退回、闭环、暂停四项选项，确认后方对外发布</span></div>
+  </div>
+
+  <div class="foot-row">
+    <span class="fl">fault-response-agent-skill/ · analysis/bug-harness/ · audit/diag-cases.jsonl</span>
+    <a href="https://ruijie.feishu.cn/docx/UfzLdALD0oZnLZxaKOpcNaJvnsb" target="_blank">需求收集会纪要 ↗</a>
+  </div>
+</section>
+
+<!-- ================= 附 · 作品展示集 ================= -->
+<section class="proj" id="plates" style="--ac:var(--ink2)">
+  <div class="side-mini">眼见为实</div>
+  <div class="p-head">
+    <div class="p-no">附</div>
+    <div class="p-title">作品展示集</div>
+    <div class="stamp sub">生产环境实拍 · 实跑</div>
+  </div>
+  <p class="p-lede">以下均为<b>生产系统实拍与真实工具输出</b>：系统全景、提单表单、拖拽看板、立项报告原件、规格列定位实测、故障诊断实录与项目交付包。</p>
+
+  <div class="plates">
+    <figure class="plate plate-wide">
+      <img src="assets/odm-panorama.jpg" alt="ODM 系统全景">
+      <figcaption><span><span class="no">图一</span>ODM 变更管理系统全景——全局统计、七段流程图、类型/阶段/紧急度三分布、拖拽看板（彼时 24 单在途）</span><span class="src">生产环境实拍 · 09-09</span></figcaption>
+    </figure>
+    <figure class="plate">
+      <img src="assets/odm-form.jpg" alt="提出变更表单">
+      <figcaption><span><span class="no">图二</span>提出变更表单——八字段精简填单，飞书实名自动绑定，提交即进看板</span><span class="src">生产环境实拍 · 09-09</span></figcaption>
+    </figure>
+    <figure class="plate">
+      <img src="assets/odm-kanban.jpg" alt="变更单看板">
+      <figcaption><span><span class="no">图三</span>变更单看板——按阶段分列、卡片可拖拽换阶段，支持 Word / PDF / Excel 三格式导出</span><span class="src">生产环境实拍 · 09-09</span></figcaption>
+    </figure>
+    <figure class="plate">
+      <img src="assets/a3-cover.jpg" alt="AI 敏捷生产系统立项报告封面">
+      <figcaption><span><span class="no">图四</span>《AI 敏捷生产系统立项报告》V2.2 封面——8/19 通过公司开题评审，流程权威 PM04MNP40S01-V2.0</span><span class="src">报告原件渲染</span></figcaption>
+    </figure>
+    <figure class="plate">
+      <div class="term-head"><span>$ python3 skills/hrs/scripts/hrs_scan.py HRS-XXXX.xlsx（脱敏样表）</span><span class="exit">exit=0</span></div>
+      <table class="scan">
+        <tr><th>sheet</th><th>规格列</th><th>数据行</th><th>已填</th><th>空</th></tr>
+        <tr><td>以太网</td><td>K</td><td>52</td><td>1</td><td>51<span class="w">待填</span></td></tr>
+        <tr><td>EMC</td><td>L</td><td>170</td><td>6</td><td>164<span class="w">待填</span></td></tr>
+        <tr><td>开关电源（产品需求）</td><td>N</td><td>49</td><td>2</td><td>47<span class="w">待填</span></td></tr>
+        <tr><td>连接器（系统设计）</td><td>P</td><td>13</td><td>3</td><td>10<span class="w">待填</span></td></tr>
+        <tr><td>风扇（系统设计）</td><td>O</td><td>22</td><td>1</td><td>21<span class="w">待填</span></td></tr>
+        <tr><td>软件对硬件需求</td><td>M</td><td>77</td><td>1</td><td>76<span class="w">待填</span></td></tr>
+        <tr><td>产品特定规格</td><td>K</td><td>152</td><td>1</td><td>151<span class="w">待填</span></td></tr>
+        <tr class="sum"><td>合计（23 模块）</td><td></td><td>988</td><td>97</td><td>891</td></tr>
+      </table>
+      <figcaption><span><span class="no">图五</span>规格列动态定位实测——EMC=L、开关电源=N、连接器=P，逐 sheet 实扫，不预设固定列</span><span class="src">本机实跑 · 09-15</span></figcaption>
+    </figure>
+    <figure class="plate plate-wide">
+      <img src="assets/hrs-ally.jpg" alt="飞书 AI 任务总结：985 行回写">
+      <figcaption><span><span class="no">图六</span>MRD→HRS 首战实录·飞书 AI 任务总结——985 行规格列全部回写、384 项待 PSE 确认（含模块/行号/拟填内容/依据背景），NEBS 推荐级等 3 项关键判断在案</span><span class="src">飞书录屏 · 08-11</span></figcaption>
+    </figure>
+    <figure class="plate">
+      <img src="assets/hrs-emc.jpg" alt="HRS EMC sheet 三档状态机">
+      <figcaption><span><span class="no">图七</span>HRS 规格列·EMC sheet 实拍——三档状态机着色：绿=有据已填、红=MRD 未明确需 PSE 确认、白=待处理</span><span class="src">飞书录屏 · 08-11</span></figcaption>
+    </figure>
+    <figure class="plate">
+      <img src="assets/hrs-power.jpg" alt="HRS 开关电源 sheet 实拍">
+      <figcaption><span><span class="no">图八</span>开关电源 sheet 实拍——硬约束推导落格：1+1 冗余填写 Y/N，「动态负载下电压偏离≤5%」等依据随格留痕</span><span class="src">飞书录屏 · 08-14</span></figcaption>
+    </figure>
+    <figure class="plate plate-wide">
+      <img src="assets/fault-mce-1.jpg" alt="锐捷线上故障处理助手 · CPU MCE 故障诊断实录（上）">
+      <figcaption><span><span class="no">图九</span>线上故障处理助手产出实录（上）——B5020 CPU MCE 故障诊断：群内 @ 助手触发自动分析，根因置信度 0.95（CPU 5 空闲状态触发 Unclassified MCE，PCC=1 不可恢复），附 console.log 685-691 行完整证据、MCA 状态码逐位解读、失效链与排除项</span><span class="src">飞书对话实录 · 08-07</span></figcaption>
+    </figure>
+    <figure class="plate plate-wide">
+      <img src="assets/fault-mce-2.jpg" alt="锐捷线上故障处理助手 · CPU MCE 故障诊断实录（下）">
+      <figcaption><span><span class="no">图十</span>产出实录（下）——历史相似案例自动检索（3 条同类案例均为 RMA 闭环）、案例库落盘（记录 / Base / 表三级定位，含置信度与处置结论）、处置建议与客户回复草稿，经人工确认后对外发布</span><span class="src">飞书对话实录 · 08-07</span></figcaption>
+    </figure>
+    <figure class="plate plate-wide">
+      <img src="assets/b6020-tree.jpg" alt="B6020 成果交付包目录">
+      <figcaption><span><span class="no">图十一</span>B6020 项目成果交付包全景——HRS 成品 / 成果回收表 / MRD 源文件 / PSE 确认清单 / 工作目录（定位卡·manifest·逐行导出）五件套，交付即可复查</span><span class="src">交付包实拍 · 09-15</span></figcaption>
+    </figure>
+    <figure class="plate">
+      <img class="portrait" src="assets/b6020-recycle.jpg" alt="MRD→HRS 试点成果回收表">
+      <figcaption><span><span class="no">图十二</span>MRD→HRS 试点成果回收表（【BCM78914】字节白盒项目）——986 行全部回写，79.5% 无需人工确认，行处理加速约 25 倍</span><span class="src">回收表原件渲染 · 09-05 口径</span></figcaption>
+    </figure>
+  </div>
+  <p class="link-caution" style="margin-top:14px">※ 图五为 23 个 sheet 之节选（8/23），完整扫描输出在档可复查；实拍截图摄于操作指南编制时点。</p>
+</section>
+
+<!-- ================= 结尾 ================= -->
+<div class="ending">
+  <div class="rule-thin2"></div>
+  <div class="wrap" style="padding:0">
+    <h2>四个系统，<span class="red">同一套方法</span>。</h2>
+    <p class="sub2">以真实流程为骨架、真实数据为依据、真实用户为检验；AI 仅处理有据内容，最终结论保留人工确认。</p>
+    <div class="beat-row">
+      <a class="beat" href="#p1"><span class="sq" style="background:var(--odm)"></span><b>ODM 变更</b><span>线上流转中 ↗</span></a>
+      <a class="beat" href="#p2"><span class="sq" style="background:var(--a3)"></span><b>AI 敏捷生产</b><span>单板委托控制台已上线 ↗</span></a>
+      <a class="beat" href="#p3"><span class="sq" style="background:var(--hrs)"></span><b>MRD→HRS</b><span>技能随取随用 ↗</span></a>
+      <a class="beat" href="#p4"><span class="sq" style="background:var(--ink)"></span><b>故障处理助手</b><span>线上运行中 ↗</span></a>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>数据截至 2026-09-15 · 全部数字来自实跑验证与在档交付物 · 本页由自动化每 30 分钟巡检维护（最近一轮 2026-09-15 22:23）</span>
+    <a href="panorama-42.html">全景版 · 42 项专项总览 →</a>
+  </div>
+</footer>
+
+</body>
+</html>
