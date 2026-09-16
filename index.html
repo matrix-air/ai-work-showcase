@@ -153,6 +153,7 @@
   .plates{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:6px}
   .plate{margin:0;border:1px solid var(--line2);background:#fcfaf5;padding:10px;break-inside:avoid}
   .plate img{width:100%;display:block;border:1px solid var(--hair)}
+  .plate img.fit{aspect-ratio:16/10;object-fit:cover;object-position:top center;height:auto}
   .plate img.portrait{width:auto;max-width:100%;margin:0 auto;max-height:640px}
   .plate figcaption{display:flex;justify-content:space-between;gap:12px;font-size:12.5px;color:var(--ink2);margin-top:9px;line-height:1.5}
   .plate .no{font-family:ui-monospace,Menlo,monospace;color:var(--ac);font-weight:700;margin-right:8px}
@@ -420,11 +421,11 @@
       <figcaption><span><span class="no">图一</span>ODM 变更管理系统全景——全局统计、七段流程图、类型/阶段/紧急度三分布、拖拽看板（彼时 24 单在途）</span><span class="src">生产环境实拍 · 09-09</span></figcaption>
     </figure>
     <figure class="plate">
-      <img src="assets/odm-form.jpg" alt="提出变更表单">
+      <img class="fit" src="assets/odm-form.jpg" alt="提出变更表单">
       <figcaption><span><span class="no">图二</span>提出变更表单——八字段精简填单，飞书实名自动绑定，提交即进看板</span><span class="src">生产环境实拍 · 09-09</span></figcaption>
     </figure>
     <figure class="plate">
-      <img src="assets/odm-kanban.jpg" alt="变更单看板">
+      <img class="fit" src="assets/odm-kanban.jpg" alt="变更单看板">
       <figcaption><span><span class="no">图三</span>变更单看板——按阶段分列、卡片可拖拽换阶段，支持 Word / PDF / Excel 三格式导出</span><span class="src">生产环境实拍 · 09-09</span></figcaption>
     </figure>
     <figure class="plate plate-wide">
@@ -439,7 +440,7 @@
       <img src="assets/collab-bot.jpg" alt="生产协同机器人消息实录">
       <figcaption><span><span class="no">图六</span>生产协同机器人消息实录——工单驳回归档（含归档件与烧片包）、卡单日报（在途单红绿分级）、重点关审核确认抄送与 AI 预审存疑提示</span><span class="src">飞书群实拍 · 09 月</span></figcaption>
     </figure>
-    <figure class="plate">
+    <figure class="plate plate-wide">
       <div class="term-head"><span>$ python3 skills/hrs/scripts/hrs_scan.py HRS-XXXX.xlsx（脱敏样表）</span><span class="exit">exit=0</span></div>
       <table class="scan">
         <tr><th>sheet</th><th>规格列</th><th>数据行</th><th>已填</th><th>空</th></tr>
@@ -459,11 +460,11 @@
       <figcaption><span><span class="no">图八</span>MRD→HRS 首战实录·飞书 AI 任务总结——985 行规格列全部回写、384 项待 PSE 确认（含模块/行号/拟填内容/依据背景），NEBS 推荐级等 3 项关键判断在案</span><span class="src">飞书录屏 · 08-11</span></figcaption>
     </figure>
     <figure class="plate">
-      <img src="assets/hrs-emc.jpg" alt="HRS EMC sheet 三档状态机">
+      <img class="fit" src="assets/hrs-emc.jpg" alt="HRS EMC sheet 三档状态机">
       <figcaption><span><span class="no">图九</span>HRS 规格列·EMC sheet 实拍——三档状态机着色：绿=有据已填、红=MRD 未明确需 PSE 确认、白=待处理</span><span class="src">飞书录屏 · 08-11</span></figcaption>
     </figure>
     <figure class="plate">
-      <img src="assets/hrs-power.jpg" alt="HRS 开关电源 sheet 实拍">
+      <img class="fit" src="assets/hrs-power.jpg" alt="HRS 开关电源 sheet 实拍">
       <figcaption><span><span class="no">图十</span>开关电源 sheet 实拍——硬约束推导落格：1+1 冗余填写 Y/N，「动态负载下电压偏离≤5%」等依据随格留痕</span><span class="src">飞书录屏 · 08-14</span></figcaption>
     </figure>
     <figure class="plate plate-wide">
@@ -478,7 +479,7 @@
       <img src="assets/b6020-tree.jpg" alt="B6020 成果交付包目录">
       <figcaption><span><span class="no">图十三</span>B6020 项目成果交付包全景——HRS 成品 / 成果回收表 / MRD 源文件 / PSE 确认清单 / 工作目录（定位卡·manifest·逐行导出）五件套，交付即可复查</span><span class="src">交付包实拍 · 09-15</span></figcaption>
     </figure>
-    <figure class="plate">
+    <figure class="plate plate-wide">
       <img class="portrait" src="assets/b6020-recycle.jpg" alt="MRD→HRS 试点成果回收表">
       <figcaption><span><span class="no">图十四</span>MRD→HRS 试点成果回收表（【BCM78914】字节白盒项目）——986 行全部回写，79.5% 无需人工确认，行处理加速约 25 倍</span><span class="src">回收表原件渲染 · 09-05 口径</span></figcaption>
     </figure>
